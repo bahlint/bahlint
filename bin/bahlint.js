@@ -160,40 +160,40 @@ ${getErrorMessage(error)}`;
 	 * Create ESLint instance with the provided options
 	 * Use default config if no bahlint.config.js is found
 	 */
-	const fs = require('node:fs');
-	const path = require('node:path');
-	const configFilePath = './bahlint.config.js';
+	const fs = require("node:fs");
+	const configFilePath = "./bahlint.config.js";
 
 	const eslintOptions = {
-		fix: isFixMode,
+		fix: isFixMode
 	};
 
 	// Only use config file if it exists
 	if (fs.existsSync(configFilePath)) {
+		// Use the user's bahlint config file
 		eslintOptions.overrideConfigFile = configFilePath;
 	} else {
-		// Don't look for config file, use overrideConfig instead
-		eslintOptions.overrideConfigFile = true; // This tells ESLint not to look for config file
+		// Don't look for any external config files; use our built-in defaults
+		eslintOptions.useEslintrc = false;
 		eslintOptions.overrideConfig = {
 			languageOptions: {
 				ecmaVersion: 2024,
 				sourceType: "module",
 				globals: {
-					// Add common globals
 					console: "readonly",
-					process: "readonly",
+					process: "readonly"
 				}
 			},
 			rules: {
-				// Add some basic rules with fixable options
+				// Basic default rules, all fixable
 				"no-console": "off",
 				"no-unused-vars": "warn",
 				"no-undef": "warn",
-				"no-multiple-empty-lines": ["warn", { "max": 1 }],
+				"no-multiple-empty-lines": ["warn", { max: 1 }],
 				"eol-last": ["warn", "always"],
 				"no-trailing-spaces": "warn",
 				"semi": ["warn", "always"],
-				"quotes": ["warn", "double"]
+				"quotes": ["warn", "double"],
+				"prefer-const": ["warn"]
 			}
 		};
 	}
